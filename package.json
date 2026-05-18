@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin",
-	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"name": "obsidian-issue-board-plugin",
+	"version": "0.1.0",
+	"description": "Issue board plugin for Obsidian: manage issues as list/kanban with drafts and file-backed issues.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {

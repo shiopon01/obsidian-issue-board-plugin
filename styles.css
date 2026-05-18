@@ -1,8 +1,761 @@
-/*
+.issue-board-root {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 12px 16px;
+	gap: 12px;
+	overflow: hidden;
+	font-size: var(--issue-board-font-size, inherit);
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.issue-board-header {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
 
-If your plugin does not need CSS, delete this file.
+.issue-board-header-left {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	flex-wrap: wrap;
+}
 
-*/
+.issue-board-mode-group {
+	display: inline-flex;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.issue-board-mode-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: transparent;
+	border: none;
+	padding: 4px 10px;
+	cursor: pointer;
+	color: var(--text-muted);
+	box-shadow: none;
+}
+
+.issue-board-mode-button.is-active {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.issue-board-search {
+	min-width: 180px;
+	padding: 4px 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	background: var(--background-primary);
+}
+
+.issue-board-status-filter {
+	display: inline-flex;
+	gap: 4px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.issue-board-filter-label {
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+
+.issue-board-chip {
+	background: var(--background-secondary);
+	color: var(--text-normal);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 999px;
+	padding: 2px 10px;
+	cursor: pointer;
+	font-size: var(--font-ui-smaller);
+}
+
+.issue-board-chip.is-active {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border-color: var(--interactive-accent);
+}
+
+.issue-board-body {
+	flex: 1;
+	overflow: auto;
+}
+
+.issue-board-empty {
+	padding: 32px;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+.issue-board-list {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.issue-board-row {
+	display: grid;
+	gap: 12px;
+	align-items: center;
+	padding: 8px 12px;
+	cursor: pointer;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.issue-board-cell {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.issue-board-due {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	font-variant-numeric: tabular-nums;
+}
+
+.issue-board-due.is-today,
+.issue-board-card-due.is-today {
+	color: var(--color-yellow);
+	font-weight: 600;
+}
+
+.issue-board-due.is-overdue,
+.issue-board-card-due.is-overdue {
+	color: var(--color-red);
+	font-weight: 600;
+}
+
+.issue-board-card-due {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.issue-board-card-due-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-card-due-icon .svg-icon {
+	width: 12px;
+	height: 12px;
+}
+
+.issue-board-priority {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	padding: 1px 5px;
+	border-radius: 4px;
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	border: 1px solid currentColor;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.issue-board-priority-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-priority-icon .svg-icon {
+	width: 11px;
+	height: 11px;
+}
+
+.issue-board-priority-p1 {
+	color: var(--color-red);
+}
+
+.issue-board-priority-p2 {
+	color: var(--color-orange);
+}
+
+.issue-board-priority-p3 {
+	color: var(--color-blue);
+}
+
+.issue-board-priority-p4 {
+	color: var(--text-muted);
+}
+
+.issue-board-list-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.issue-board-list-group-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 600;
+	color: var(--text-normal);
+	padding: 4px 4px;
+	cursor: pointer;
+	user-select: none;
+	border-radius: 4px;
+}
+
+.issue-board-list-group-header:hover {
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-list-group-count {
+	color: var(--text-muted);
+	font-weight: normal;
+	font-size: var(--font-ui-smaller);
+}
+
+.issue-board-group-chevron {
+	display: inline-flex;
+	align-items: center;
+	color: var(--text-muted);
+}
+
+.issue-board-list-header {
+	display: grid;
+	gap: 12px;
+	align-items: center;
+	padding: 6px 12px;
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	color: var(--text-muted);
+	border-bottom: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.issue-board-list-header-cell {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	min-width: 0;
+	user-select: none;
+	cursor: grab;
+}
+
+.issue-board-list-header-cell:active {
+	cursor: grabbing;
+}
+
+.issue-board-list-header-cell.is-dragging {
+	opacity: 0.4;
+}
+
+.issue-board-list-header-cell.is-sortable {
+	/* Sort cycle is still triggered on plain click; DnD takes priority. */
+}
+
+.issue-board-header-drop-indicator {
+	pointer-events: none;
+	background: var(--interactive-accent);
+	border-radius: 2px;
+	z-index: var(--layer-popover, 9000);
+}
+
+.issue-board-list-header-cell.is-sortable:hover {
+	color: var(--text-normal);
+}
+
+.issue-board-list-header-cell.is-sorted {
+	color: var(--text-normal);
+}
+
+.issue-board-sort-arrow {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-sort-arrow .svg-icon {
+	width: 12px;
+	height: 12px;
+}
+
+.issue-board-view-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	padding: 4px 10px;
+	cursor: pointer;
+	color: var(--text-normal);
+}
+
+.issue-board-view-button:hover {
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-drag-handle.is-hidden {
+	visibility: hidden;
+	width: 0;
+}
+
+/* --- View popover ---------------------------------------------------- */
+
+.issue-board-vp {
+	z-index: var(--layer-menu, 9999);
+	min-width: 220px;
+	max-width: 280px;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	padding: 4px;
+	box-shadow: var(--shadow-l);
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.issue-board-vp-row {
+	display: grid;
+	grid-template-columns: 20px 1fr 16px;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	cursor: pointer;
+	color: var(--text-normal);
+	font-size: var(--font-ui-small);
+}
+
+.issue-board-vp-row:hover {
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-vp-icon,
+.issue-board-vp-right,
+.issue-board-vp-check {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-muted);
+}
+
+.issue-board-vp-icon .svg-icon,
+.issue-board-vp-right .svg-icon,
+.issue-board-vp-check .svg-icon {
+	width: 14px;
+	height: 14px;
+}
+
+.issue-board-vp-label {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.issue-board-vp-back {
+	font-weight: 600;
+	border-bottom: 1px solid var(--background-modifier-border);
+	border-radius: 4px 4px 0 0;
+}
+
+.issue-board-vp-separator {
+	height: 1px;
+	margin: 4px 0;
+	background: var(--background-modifier-border);
+}
+
+.issue-board-vp-fields-list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.issue-board-vp-field-row {
+	grid-template-columns: 16px 1fr 16px;
+}
+
+.issue-board-vp-handle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-faint);
+	cursor: grab;
+}
+
+.issue-board-vp-handle:active {
+	cursor: grabbing;
+}
+
+.issue-board-vp-handle .svg-icon {
+	width: 12px;
+	height: 12px;
+}
+
+.issue-board-vp-field-row.is-dragging {
+	opacity: 0.4;
+}
+
+.issue-board-vp-field-drop-indicator {
+	pointer-events: none;
+	background: var(--interactive-accent);
+	border-radius: 1px;
+	/* Must sit above the popover itself (which has --layer-menu). */
+	z-index: 20000;
+	box-shadow: 0 0 6px var(--interactive-accent);
+}
+
+.issue-board-add-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	cursor: pointer;
+	color: var(--text-muted);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.issue-board-add-row:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-add-row-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-drag-handle {
+	color: var(--text-faint);
+	cursor: grab;
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-drag-handle:active {
+	cursor: grabbing;
+}
+
+.issue-board-row:last-child {
+	border-bottom: none;
+}
+
+.issue-board-row:hover {
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-id {
+	font-family: var(--font-monospace);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.issue-board-id.is-draft,
+.issue-board-card-id.is-draft {
+	color: var(--color-orange);
+	font-weight: 600;
+	font-family: var(--font-interface);
+}
+
+.issue-board-title {
+	color: var(--text-normal);
+}
+
+.issue-board-status-badge {
+	--issue-board-status-color: var(--text-muted);
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: var(--font-ui-smaller);
+	background: color-mix(in srgb, var(--issue-board-status-color) 20%, transparent);
+	color: var(--issue-board-status-color);
+	border: 1px solid color-mix(in srgb, var(--issue-board-status-color) 40%, transparent);
+}
+
+
+.issue-board-kanban {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	height: 100%;
+	min-height: 100%;
+	padding-bottom: 8px;
+}
+
+.issue-board-column {
+	flex: 0 0 280px;
+	display: flex;
+	flex-direction: column;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.issue-board-column-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	font-weight: 600;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.issue-board-column-head-left {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.issue-board-column-count {
+	color: var(--text-muted);
+	font-weight: normal;
+	font-size: var(--font-ui-smaller);
+}
+
+.issue-board-column-head-right {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.issue-board-column-add,
+.issue-board-column-more {
+	background: transparent;
+	border: none;
+	color: var(--text-muted);
+	padding: 2px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: none;
+}
+
+.issue-board-column-add:hover,
+.issue-board-column-more:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+.issue-board-column-title.has-color {
+	--issue-board-status-color: var(--text-muted);
+	border-left: 3px solid var(--issue-board-status-color);
+	padding-left: 6px;
+}
+
+.issue-board-add-status {
+	flex: 0 0 200px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px;
+	border: 1px dashed var(--background-modifier-border);
+	border-radius: 8px;
+	color: var(--text-muted);
+	cursor: pointer;
+	align-self: flex-start;
+	background: transparent;
+}
+
+.issue-board-add-status:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-add-status-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-column-body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 8px;
+	overflow-y: auto;
+}
+
+.issue-board-card {
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	padding: 8px 10px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.issue-board-card:hover {
+	background: var(--background-modifier-hover);
+}
+
+.issue-board-card.is-dragging,
+.issue-board-row.is-dragging {
+	opacity: 0.45;
+	outline: 1px dashed var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+/* Hide the empty placeholder while a card is being dragged into a column. */
+.issue-board-column-body:has(.issue-board-card.is-dragging) .issue-board-column-empty {
+	display: none;
+}
+
+.issue-board-card-id {
+	font-family: var(--font-monospace);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.issue-board-card-title {
+	color: var(--text-normal);
+	line-height: 1.3;
+}
+
+.issue-board-card-body {
+	color: var(--text-muted);
+	font-size: 0.9em;
+	line-height: 1.35;
+	margin-left: 12px;
+	padding-left: 8px;
+	border-left: 2px solid var(--background-modifier-border);
+	word-break: break-word;
+}
+
+.issue-board-card-body-line {
+	min-height: 1em;
+	white-space: pre-wrap;
+}
+
+.issue-board-card-body-line.is-blank {
+	min-height: 0.5em;
+}
+
+.issue-board-card-body-line.has-checkbox {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	white-space: normal;
+}
+
+.issue-board-card-checkbox {
+	margin: 3px 0 0 0;
+	cursor: pointer;
+	flex: 0 0 auto;
+}
+
+.issue-board-card-checkbox-text {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.issue-board-card-body-line.is-checked .issue-board-card-checkbox-text {
+	text-decoration: line-through;
+	opacity: 0.6;
+}
+
+.issue-board-card.is-editing {
+	padding: 6px;
+}
+
+.issue-board-card-editor {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid var(--background-modifier-border-focus);
+	border-radius: 4px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1.4;
+	padding: 6px 8px;
+	resize: vertical;
+	min-height: 4em;
+}
+
+.issue-board-card-editor:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+}
+
+.issue-board-card-meta {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.issue-board-checklist-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 6px;
+	border-radius: 4px;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+	border: 1px solid var(--background-modifier-border);
+}
+
+.issue-board-checklist-badge.is-complete {
+	color: var(--color-green);
+	border-color: color-mix(in srgb, var(--color-green) 60%, transparent);
+}
+
+.issue-board-checklist-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.issue-board-checklist-icon .svg-icon {
+	width: 12px;
+	height: 12px;
+}
+
+.issue-board-column-empty {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	text-align: center;
+	padding: 12px 0;
+}
+
+.issue-board-modal {
+	min-width: 520px;
+}
+
+.issue-board-modal-title {
+	width: 100%;
+}
+
+.issue-board-modal-body {
+	width: 100%;
+	font-family: var(--font-monospace);
+}
+
+.issue-board-modal-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.issue-board-template-input {
+	width: 100%;
+	font-family: var(--font-monospace);
+}
